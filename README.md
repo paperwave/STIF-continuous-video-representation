@@ -1,1 +1,1 @@
-# STIF-continuous-video-representation
+# STIF: Learning Continuous Video Representation for Space-Time Super-Resolution
