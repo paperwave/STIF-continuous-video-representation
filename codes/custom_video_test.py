@@ -69,8 +69,6 @@ for folder in folder_list:
     all_name_list.update({folder: [os.path.join(f_path, name) for name in sorted(os.listdir(f_path))]})
 # out_path = '/home/users/zeyuan_chen/image_repo/DAVIS/dolphins-show/'
 
-# folder_list = 
-
 for folder in all_name_list.keys():
     if not folder in ['train']:
         continue
@@ -88,18 +86,15 @@ for folder in all_name_list.keys():
     index = 0
     index_0 = 0
     for i in range(len(name_list) - 1):
-        # if i >= 50:
-        #     break
+
         imgpath1 = os.path.join(name_list[i])
         imgpath2 = os.path.join(name_list[i + 1])
         img1 = cv2.imread(imgpath1, cv2.IMREAD_UNCHANGED)
         img2 = cv2.imread(imgpath2, cv2.IMREAD_UNCHANGED)
-        # bp()
         img1 = imresize_np(img1, 1/2, True).astype(np.float32) / 255.
         img2 = imresize_np(img2, 1/2, True).astype(np.float32) / 255.
         print(img1.shape)
-        # img1 = cv2.resize(img1, (320, 180))
-        # img2 = cv2.resize(img2, (320, 180))
+
         Image.fromarray((np.clip(img1[:, :, [2,1,0]], 0, 1) * 255).astype(np.uint8)).save(os.path.join(out_path2, name_list[i].split('/')[-1]))
         print(os.path.join(out_path2, name_list[i].split('/')[-1]), "SAVED!")
         imgs = np.stack([img1, img2], axis=0)[:, :, :, [2,1,0]]
@@ -117,13 +112,6 @@ for folder in all_name_list.keys():
             for i in range(8):
                 HH, WW = img1.shape[0] * 4, img1.shape[1] * 4
                 img = Image.fromarray((np.clip(img1[:, :, [2,1,0]], 0, 1) * 255).astype(np.uint8)).resize((WW, HH), Image.BICUBIC)
-                img.save(os.path.join(out_path1, '{}.jpg'.format(index)))
-                print(os.path.join(out_path1, '{}.jpg'.format(index)), "SAVED!")
-                index += 1
-        elif mode == "TMNet":
-            for i in range(output.shape[1] - 1):
-                img = output[0][i]
-                img = Image.fromarray((img.clamp(0., 1.).detach().cpu().permute(1, 2, 0) * 255).numpy().astype(np.uint8))
                 img.save(os.path.join(out_path1, '{}.jpg'.format(index)))
                 print(os.path.join(out_path1, '{}.jpg'.format(index)), "SAVED!")
                 index += 1
