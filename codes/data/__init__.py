@@ -13,13 +13,8 @@ try:
 except ImportError:
     pass
 import data.util as util
-from prefetch_generator import BackgroundGenerator
 from torch.utils.data import DataLoader
 
-class DataLoaderX(DataLoader):
-
-    def __iter__(self):
-        return BackgroundGenerator(super().__iter__())
 
 def create_dataloader(dataset, dataset_opt, opt, sampler):
     phase = dataset_opt['phase']
