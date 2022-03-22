@@ -14,7 +14,18 @@ cd codes/models/modules/DCNv2
 python setup.py install
 ```
 
-## Test
+## Testing
+Change the data path in [custom_video_test.py line 57](https://github.com/zychen-ustc/STIF-continuous-video-representation/blob/4f41fe924c5308b7529c853bc7b344b822d2e3a5/codes/custom_video_test.py#L57) and put video sequences in it. The file structure is as follows:
+
+```
+data_path
+├── sequence1
+    ├── im01.png
+    ├── ...
+    ├── im99.png
+```
+
+For testing:
 ```
 cd codes
 python custom_video_test.py
