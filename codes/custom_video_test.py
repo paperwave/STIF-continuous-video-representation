@@ -34,9 +34,6 @@ mode = "LIIF" # TMNet & LIIF
 if mode == "LIIF":
     model = Sakuya_arch_test.LunaTokis(64, N_ot, 8, 5, 40)
     model.load_state_dict(torch.load('latest_G.pth'), strict=True)
-elif mode == "TMNet":
-    model = STVSR.TMNet(64, N_ot, 8, 5, 40)
-    model.load_state_dict(torch.load('/home/users/zeyuan_chen/model_repo/tmnet-pretrain.pth'), strict=True)
 
 model.eval()
 model = model.to(device)
@@ -51,31 +48,27 @@ def single_forward(model, imgs_in, use_time=True, N_ot=6):
         imgs_temp[:,:,:,0:h,0:w] = imgs_in
         if mode == "LIIF":
             time_Tensors = [torch.tensor([i / 8])[None].to(device) for i in range(8)]
-        elif mode == "TMNet":
-            time_Tensors = torch.tensor([i / 8 for i in range(1, 8)])[None].to(device)
-        # print(imgs_temp.shape)
         
         model_output = model(imgs_temp, time_Tensors)
         # model_output = model(imgs_temp, time_Tensors, test=True)
         return model_output
 
 
-folder_path = '/home/yuefanw/scratch/video_data/'
+folder_path = 'video_sequences/'
 folder_list = sorted(os.listdir(folder_path))
 all_name_list = {}
 for folder in folder_list:
     f_path = os.path.join(folder_path, folder)
     print(f_path)
     all_name_list.update({folder: [os.path.join(f_path, name) for name in sorted(os.listdir(f_path))]})
-# out_path = '/home/users/zeyuan_chen/image_repo/DAVIS/dolphins-show/'
 
 for folder in all_name_list.keys():
     if not folder in ['train']:
         continue
     name_list = all_name_list[folder]
-    out_path = '/home/yuefanw/scratch/video_results/{}/HR/'.format(folder)
-    out_path1 = '/home/yuefanw/scratch/video_results/{}/bicubic/'.format(folder)
-    out_path2 = '/home/yuefanw/scratch/video_results/{}/LR/'.format(folder)
+    out_path = 'output/{}/HR/'.format(folder)
+    out_path1 = 'output/{}/bicubic/'.format(folder)
+    out_path2 = 'output/{}/LR/'.format(folder)
     if not os.path.exists(out_path):
         os.makedirs(out_path)
     if not os.path.exists(out_path1):
