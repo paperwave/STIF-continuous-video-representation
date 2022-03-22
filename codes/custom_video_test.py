@@ -33,7 +33,7 @@ header_written = False
 mode = "LIIF" # TMNet & LIIF
 if mode == "LIIF":
     model = Sakuya_arch_test.LunaTokis(64, N_ot, 8, 5, 40)
-    model.load_state_dict(torch.load('/home/users/zeyuan_chen/model_repo/latest_G.pth'), strict=True)
+    model.load_state_dict(torch.load('latest_G.pth'), strict=True)
 elif mode == "TMNet":
     model = STVSR.TMNet(64, N_ot, 8, 5, 40)
     model.load_state_dict(torch.load('/home/users/zeyuan_chen/model_repo/tmnet-pretrain.pth'), strict=True)
@@ -60,10 +60,7 @@ def single_forward(model, imgs_in, use_time=True, N_ot=6):
         return model_output
 
 
-# folder_path = '/home/users/zeyuan_chen/DAVIS2017/DAVIS/JPEGImages/Full-Resolution/'
-# folder_path = '/home/users/zeyuan_chen/DAVIS/JPEGImages/Full-Resolution/'
-folder_path = '/home/users/zeyuan_chen/davis2016/DAVIS/JPEGImages/1080p/'
-# folder_path = '/home/users/zeyuan_chen/DAVIS-2019-challenge/DAVIS/JPEGImages/Full-Resolution/'
+folder_path = '/home/yuefanw/scratch/video_data/'
 folder_list = sorted(os.listdir(folder_path))
 all_name_list = {}
 for folder in folder_list:
@@ -75,21 +72,12 @@ for folder in folder_list:
 # folder_list = 
 
 for folder in all_name_list.keys():
-    # if not folder == 'kite-surf':
-    #     continue
-    # if not folder in ['hike', 'hockey', 'kite-walk', 'paragliding', 'rhino', 'soapbox']:
-    # if not folder in ['bmx-rider', 'boxing', 'dog-control', 'dolphins', 'dolphins-show']:
-    # if not folder in ['demolition', 'grass-chopper', 'helicopter-landing', 'inflatable', 'kart-turn', 'selfie', 'wings-turn']:
-    # if not folder in ['grass-chopper', 'helicopter-landing', 'inflatable', 'kart-turn', 'selfie', 'wings-turn']:
-    # if not folder in ['car-shadow', 'drift-chicane', 'flamingo', 'train']:
-    # if not folder in ['bmx-rider']:
-    # if not folder in ['paragliding', 'hockey', 'kite-surf']:
-    if not folder in ['bmx-bumps']:
+    if not folder in ['train']:
         continue
     name_list = all_name_list[folder]
-    out_path = '/home/users/zeyuan_chen/image_repo/DAVIS2016/{}/HR/'.format(folder)
-    out_path1 = '/home/users/zeyuan_chen/image_repo/DAVIS2016/{}/bicubic/'.format(folder)
-    out_path2 = '/home/users/zeyuan_chen/image_repo/DAVIS2016/{}/LR/'.format(folder)
+    out_path = '/home/yuefanw/scratch/video_results/{}/HR/'.format(folder)
+    out_path1 = '/home/yuefanw/scratch/video_results/{}/bicubic/'.format(folder)
+    out_path2 = '/home/yuefanw/scratch/video_results/{}/LR/'.format(folder)
     if not os.path.exists(out_path):
         os.makedirs(out_path)
     if not os.path.exists(out_path1):
@@ -107,8 +95,8 @@ for folder in all_name_list.keys():
         img1 = cv2.imread(imgpath1, cv2.IMREAD_UNCHANGED)
         img2 = cv2.imread(imgpath2, cv2.IMREAD_UNCHANGED)
         # bp()
-        img1 = imresize_np(img1, 1/10, True).astype(np.float32) / 255.
-        img2 = imresize_np(img2, 1/10, True).astype(np.float32) / 255.
+        img1 = imresize_np(img1, 1/2, True).astype(np.float32) / 255.
+        img2 = imresize_np(img2, 1/2, True).astype(np.float32) / 255.
         print(img1.shape)
         # img1 = cv2.resize(img1, (320, 180))
         # img2 = cv2.resize(img2, (320, 180))
